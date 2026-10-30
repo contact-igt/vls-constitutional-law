@@ -24,7 +24,7 @@ export function WhyVls() {
   return (
     <section className="border-b border-line">
       <Container className="grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:gap-16 lg:py-24">
-        <div className="lg:col-span-6">
+        <div className="flex flex-col lg:col-span-6">
           <Eyebrow>Why VLS Law Academy</Eyebrow>
           <h2 className="mt-4 font-serif text-3xl font-semibold leading-tight sm:text-4xl">{whyVls.heading}</h2>
           <p className="mt-5 leading-relaxed text-ink/75">{whyVls.intro}</p>
@@ -41,20 +41,20 @@ export function WhyVls() {
         <div className="lg:col-span-6">
           <h3 className="font-serif text-2xl font-semibold">{environment.heading}</h3>
           <p className="mt-3 leading-relaxed text-ink/75">{environment.body}</p>
-          <div className="mt-6 grid grid-cols-5 gap-3">
+          <div className="mt-6 grid min-h-72 flex-1 grid-cols-2 gap-4">
             <Photo
               src={photos.learners.src}
               alt={photos.learners.alt}
               label="VLS learners in session"
-              sizes="(min-width: 1024px) 20vw, 60vw"
-              className="col-span-3 aspect-[4/5]"
+              sizes="(min-width: 1024px) 20vw, 50vw"
+              className="h-full"
             />
             <Photo
               src={photos.academy.src}
               alt={photos.academy.alt}
               label="VLS academy interior"
-              sizes="(min-width: 1024px) 14vw, 40vw"
-              className="col-span-2 mt-10 aspect-[4/5]"
+              sizes="(min-width: 1024px) 20vw, 50vw"
+              className="h-full"
             />
           </div>
         </div>

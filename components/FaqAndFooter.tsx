@@ -55,7 +55,7 @@ export function SiteFooter() {
       <Container className="grid gap-8 py-12 text-sm leading-relaxed md:grid-cols-12">
         <div className="md:col-span-5">
           <a href="#top" className="inline-flex" aria-label="VLS Law Academy, back to top">
-            <Image src="/assets/home/vls_logo.png" alt="VLS Law Academy" width={100} height={100} className="h-24 w-24 object-cover" />
+            <Image src="/assets/home/vls_logo.png" alt="VLS Law Academy" width={88} height={88} className="shrink-0 bg-white p-2" />
           </a>
           <address className="mt-3 not-italic">{contact.address}</address>
         </div>

@@ -12,8 +12,6 @@ export type EnquiryInput = {
   name: string;
   mobile: string;
   email: string;
-  status: string;
-  city: string;
   consent: boolean;
 };
 
@@ -46,10 +44,7 @@ export function validateEnquiry(input: EnquiryInput): EnquiryErrors {
   else if (email.length > 254 || !EMAIL_RE.test(email))
     errors.email = "Enter a valid email address.";
 
-  if (!(LEARNER_STATUSES as readonly string[]).includes(input.status))
-    errors.status = "Please select your current status.";
 
-  if (input.city.trim().length > 80) errors.city = "City name is too long.";
 
   if (!input.consent) errors.consent = "Please agree to be contacted about this enquiry.";
 

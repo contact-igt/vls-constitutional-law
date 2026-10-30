@@ -74,8 +74,6 @@ export async function handleEnquiry(request: Request, trustedPayment = false): P
     name: clean(raw.name, 120),
     mobile: clean(raw.mobile, 40),
     email: clean(raw.email, 260),
-    status: clean(raw.status, 40),
-    city: clean(raw.city, 100),
     consent: raw.consent === true,
   };
   const errors = validateEnquiry(input);
@@ -94,9 +92,6 @@ export async function handleEnquiry(request: Request, trustedPayment = false): P
     name: input.name,
     mobile: normalizeIndianMobile(input.mobile),
     email: input.email,
-    status: input.status,
-    current_status: input.status,
-    city: input.city || null,
     consent: { given: true, text: CONSENT_TEXT },
     utm,
     ...utm,

@@ -16,16 +16,16 @@ export function Registration() {
             <a href={contact.courseTel} className="inline-block py-2 font-semibold text-vls underline underline-offset-2">{contact.coursePhone}</a>
             <a href={contact.academyTel} className="inline-block py-2 font-semibold text-vls underline underline-offset-2">{contact.academyPhone}</a>
           </p>
-        </div>
-
-        <div className="border border-line bg-white p-5 sm:p-8 lg:col-span-7">
           {registrationOpen && (
-            <div className="mb-6 grid gap-3 border-b border-line pb-6 text-sm sm:grid-cols-3">
+            <div className="mt-8 grid gap-4 border-t border-line pt-5 text-sm sm:grid-cols-3">
               <p><span className="block text-xs uppercase tracking-[0.12em] text-muted">Date</span><strong>{programConfig.date}</strong></p>
               <p><span className="block text-xs uppercase tracking-[0.12em] text-muted">Time</span><strong>{programConfig.time}</strong></p>
               <p><span className="block text-xs uppercase tracking-[0.12em] text-muted">Fee</span><strong>₹{programConfig.fee}</strong></p>
             </div>
           )}
+        </div>
+
+        <div className="border border-line bg-white p-5 sm:p-8 lg:col-span-7">
           <EnquiryForm />
         </div>
       </Container>

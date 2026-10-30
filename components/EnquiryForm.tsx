@@ -7,7 +7,6 @@ import { contact, registration, whatsappLink, WHATSAPP_DEFAULT_MESSAGE } from "@
 import { programConfig, registrationCta, registrationOpen } from "@/lib/program";
 import type { EnquiryResponse } from "@/lib/enquiry";
 import {
-  LEARNER_STATUSES,
   normalizeIndianMobile,
   validateEnquiry,
   type EnquiryErrors,
@@ -15,8 +14,8 @@ import {
 } from "@/lib/validation";
 import { btnPrimary, btnSecondary, WhatsAppIcon } from "./ui";
 
-const empty: EnquiryInput = { name: "", mobile: "", email: "", status: "", city: "", consent: false };
-const ORDER: (keyof EnquiryInput)[] = ["name", "mobile", "email", "status", "city", "consent"];
+const empty: EnquiryInput = { name: "", mobile: "", email: "", consent: false };
+const ORDER: (keyof EnquiryInput)[] = ["name", "mobile", "email", "consent"];
 
 const field =
   "mt-1.5 block min-h-12 w-full border border-ink/25 bg-white px-3.5 py-3 text-base text-ink placeholder:text-ink/40 focus:border-vls aria-[invalid=true]:border-vls";
@@ -52,8 +51,6 @@ export function EnquiryForm() {
       `Name: ${values.name.trim()}`,
       `Mobile: ${normalizeIndianMobile(values.mobile)}`,
       `Email: ${values.email.trim()}`,
-      `Status: ${values.status}`,
-      values.city.trim() ? `City: ${values.city.trim()}` : "",
     ].filter(Boolean);
     return whatsappLink(lines.join("\n"));
   };
@@ -176,11 +173,6 @@ export function EnquiryForm() {
   return (
     <>
     <form ref={formRef} onSubmit={onSubmit} noValidate className="relative space-y-5" aria-label="Boot camp enquiry form">
-      {errorCount > 0 && (
-        <p role="alert" className="border-l-4 border-vls bg-vls/5 px-4 py-3 text-sm font-medium text-vls">
-          Please fix {errorCount === 1 ? "the highlighted field" : `the ${errorCount} highlighted fields`} and try again.
-        </p>
-      )}
 
       {/* Honeypot: hidden from people and assistive tech; bots fill it. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
@@ -214,30 +206,6 @@ export function EnquiryForm() {
           <input id="email" name="email" type="email" inputMode="email" autoComplete="email" required
             value={values.email} onChange={(e) => set("email", e.target.value)} className={field} {...a11y("email")} />
           {err("email")}
-        </div>
-      </div>
-
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="status" className="text-sm font-semibold">
-            Current status <span className="text-vls" aria-hidden="true">*</span>
-          </label>
-          <select id="status" name="status" required value={values.status}
-            onChange={(e) => set("status", e.target.value)} className={field} {...a11y("status")}>
-            <option value="">Select one</option>
-            {LEARNER_STATUSES.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-          {err("status")}
-        </div>
-        <div>
-          <label htmlFor="city" className="text-sm font-semibold">
-            City <span className="font-normal text-muted">(optional)</span>
-          </label>
-          <input id="city" name="city" type="text" autoComplete="address-level2" value={values.city}
-            onChange={(e) => set("city", e.target.value)} className={field} {...a11y("city")} />
-          {err("city")}
         </div>
       </div>
 
