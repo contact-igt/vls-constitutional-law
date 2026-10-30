@@ -2,6 +2,18 @@
 
 export const COURSE_ID = "constitutional-law-bootcamp";
 
+// The single source of truth for a publishable session. Keep it unannounced until confirmed.
+export const programConfig = {
+  name: "Constitutional Law & Practice Boot Camp",
+  pageName: COURSE_ID,
+  sessionStatus: "announced" as "announced" | "unannounced",
+  registrationEndsAt: null as string | null,
+  classStartAt: "2026-11-13T18:00:00+05:30" as string | null,
+  date: "Friday, November 13, 2026" as string | null,
+  time: "6:00 PM – 9:00 PM IST" as string | null,
+  fee: 500 as number | null,
+} as const;
+
 export const contact = {
   coursePhone: "+91 95000 25216",
   courseTel: "tel:+919500025216",
@@ -215,19 +227,18 @@ export const finalCta = {
   cta: "Enquire About the Boot Camp",
 } as const;
 
-// Photographs are pending VLS reuse approval (docs/APPROVALS.md). While `src` is null
-// the <Photo> component renders a neutral placeholder. Do not label as boot-camp photos.
+// Existing VLS classroom photography reused from the VLS business-law landing page.
 export const photos = {
   hero: {
-    src: null as string | null,
+    src: "/assets/vls/classroom/faculty-teaching.jpg",
     alt: "Faculty member explaining a point to a classroom of law learners at VLS Law Academy",
   },
   learners: {
-    src: null as string | null,
-    alt: "Law learners taking notes during a session at VLS Law Academy",
+    src: "/assets/vls/classroom/faculty-pointing.jpg",
+    alt: "Faculty member teaching a VLS Law Academy classroom session",
   },
   academy: {
-    src: null as string | null,
+    src: "/assets/vls/classroom/academy-interior.jpg",
     alt: "Interior of the VLS Law Academy classroom with VLS branding",
   },
 } as const;

@@ -7,6 +7,7 @@ import { Registration } from "@/components/Registration";
 import { SiteHeader } from "@/components/SiteHeader";
 import { StickyEnquiryBar } from "@/components/StickyEnquiryBar";
 import { Takeaways } from "@/components/Takeaways";
+import { Testimonials } from "@/components/Testimonials";
 import { Topics } from "@/components/Topics";
 
 export default function Page() {
@@ -24,6 +25,7 @@ export default function Page() {
         <Takeaways />
         <Audience />
         <WhyVls />
+        <Testimonials />
         <Registration />
         <Faq />
         <FinalCta />

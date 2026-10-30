@@ -20,10 +20,7 @@ export function Container({ children, className = "" }: { children: ReactNode; c
   return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
 }
 
-/**
- * Real VLS photograph when `src` is set; otherwise a neutral placeholder.
- * Photos are pending reuse approval (docs/APPROVALS.md).
- */
+/** Real VLS photograph when `src` is set; otherwise a neutral placeholder. */
 export function Photo({
   src,
   alt,

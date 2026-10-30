@@ -1,4 +1,6 @@
 import { hero, photos } from "@/lib/content";
+import { programConfig, registrationCta, registrationOpen } from "@/lib/program";
+import { CountUpNumber } from "./CountUpNumber";
 import { btnPrimary, btnSecondary, Container, Eyebrow, Photo } from "./ui";
 
 export function Hero() {
@@ -12,8 +14,14 @@ export function Hero() {
           </h1>
           <p className="mt-5 text-lg font-medium text-vls sm:text-xl">{hero.tagline}</p>
 
+          {registrationOpen && (
+            <p className="mt-5 border-y border-line py-3 text-sm font-semibold text-ink sm:text-base">
+              {programConfig.date} <span aria-hidden="true">·</span> {programConfig.time} <span aria-hidden="true">·</span> ₹{programConfig.fee}
+            </p>
+          )}
+
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <a href="#register" className={btnPrimary}>{hero.primaryCta}</a>
+            <a href="#register" className={btnPrimary}>{registrationCta}</a>
             <a href="#syllabus" className={btnSecondary}>{hero.secondaryCta}</a>
           </div>
 
@@ -27,7 +35,7 @@ export function Hero() {
             {hero.highlights.map((h) => (
               <div key={h.label} className="flex flex-col px-3 py-4 first:pl-0 sm:px-5">
                 <dt className="order-2 text-xs leading-snug text-muted sm:text-sm">{h.label}</dt>
-                <dd className="font-serif text-4xl font-semibold text-ink sm:text-5xl">{h.value}</dd>
+                <dd className="font-serif text-4xl font-semibold text-ink sm:text-5xl"><CountUpNumber value={h.value} /></dd>
               </div>
             ))}
           </dl>

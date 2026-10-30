@@ -14,7 +14,7 @@ Base URL: `https://businesslaw.vlslawacademy.com/assets/vls/`
 | `classroom/classroom-wide-session.jpg` | JPEG, 201 KB | Optional: learning environment | same | Pending permission |
 | `classroom/classroom-procedure-flowchart.jpg` | JPEG, 176 KB | NOT planned — shows DRT procedure content | — | Do not use |
 | `faculty/dr-sivakumar.png` | PNG | NOT planned — DRT faculty, not confirmed for this course | — | Do not use |
-| `testimonial-1..3` | images | NOT planned — testimonials are for other courses | — | Do not use |
+| `testimonial-1..3` | images + video | VLS learner-experience section | `public/assets/home/testimonialimg1..3` | Approved by user 2026-10-30; do not present as boot-camp-specific outcomes |
 
 Alt text rule: describe what is visible (e.g. "Faculty member explaining a point to a classroom of law learners at VLS Law Academy"). Never caption as "photo from the boot camp".
 

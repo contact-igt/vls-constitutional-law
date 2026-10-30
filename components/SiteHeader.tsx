@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { btnPrimary, Container } from "./ui";
 
 const links = [
@@ -28,10 +29,9 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-ivory/95 backdrop-blur supports-[backdrop-filter]:bg-ivory/85">
-      <Container className="flex h-16 items-center justify-between gap-4">
-        <a href="#top" className="flex min-h-11 flex-col justify-center leading-tight" aria-label="VLS Law Academy, Constitutional Law Boot Camp, back to top">
-          <span className="block text-[15px] font-bold tracking-[0.12em] text-vls">VLS LAW ACADEMY</span>
-          <span className="block text-[11px] uppercase tracking-[0.16em] text-muted">Constitutional Law Boot Camp</span>
+      <Container className="flex h-20 items-center justify-between gap-4">
+        <a href="#top" className="flex min-h-11 items-center" aria-label="VLS Law Academy, back to top">
+          <Image src="/assets/home/vls_logo.png" alt="VLS Law Academy" width={100} height={100} priority className="h-16 w-16 object-cover" />
         </a>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">

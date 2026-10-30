@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
+import Script from "next/script";
 import { indexable, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -43,7 +44,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${serif.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+      </body>
     </html>
   );
 }

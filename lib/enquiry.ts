@@ -1,4 +1,6 @@
 import { COURSE_ID } from "./content";
+import { constitutionalRegistrationUrl } from "./api";
+import { programConfig } from "./program";
 import { normalizeIndianMobile, validateEnquiry, type EnquiryErrors, type EnquiryInput } from "./validation";
 
 export const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
@@ -8,7 +10,10 @@ export const CONSENT_TEXT =
   "I agree to be contacted by VLS Law Academy about this enquiry, as described in the Privacy Policy.";
 
 /** What the browser sends to /api/enquiry. */
-export type EnquiryRequest = EnquiryInput & { utm?: Utm; pageUrl?: string; website?: string };
+export type EnquiryRequest = EnquiryInput & {
+  utm?: Utm; pageUrl?: string; website?: string; payment_status?: "waitlist" | "paid";
+  amount?: number | ""; razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string;
+};
 
 /**
  * Responses:
@@ -40,11 +45,16 @@ function cleanUtm(raw: unknown): Utm {
   return out;
 }
 
+function clientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  return clean(forwarded?.split(",")[0], 45) || clean(request.headers.get("x-real-ip"), 45);
+}
+
 function json(body: EnquiryResponse, status: number) {
   return Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 }
 
-export async function handleEnquiry(request: Request): Promise<Response> {
+export async function handleEnquiry(request: Request, trustedPayment = false): Promise<Response> {
   const text = await request.text();
   if (text.length > MAX_BODY) return json({ ok: false, mode: "invalid", errors: {} }, 400);
 
@@ -71,23 +81,40 @@ export async function handleEnquiry(request: Request): Promise<Response> {
   const errors = validateEnquiry(input);
   if (Object.keys(errors).length) return json({ ok: false, mode: "invalid", errors }, 400);
 
-  const url = process.env.LEAD_WEBHOOK_URL;
+  const paymentStatus = raw.payment_status === "paid" && trustedPayment ? "paid" : "waitlist";
+
+  const url = constitutionalRegistrationUrl();
   if (!url) return json({ ok: false, mode: "whatsapp" }, 501);
 
+  const utm = cleanUtm(raw.utm);
+  const token = process.env.LEAD_WEBHOOK_TOKEN;
   const payload = {
     course: COURSE_ID,
+    client_key: "vls_law",
     name: input.name,
     mobile: normalizeIndianMobile(input.mobile),
     email: input.email,
     status: input.status,
+    current_status: input.status,
     city: input.city || null,
     consent: { given: true, text: CONSENT_TEXT },
-    utm: cleanUtm(raw.utm),
+    utm,
+    ...utm,
     pageUrl: clean(raw.pageUrl, 500) || null,
     submittedAt: new Date().toISOString(),
+    registered_date: new Date().toISOString(),
+    programme_date: programConfig.classStartAt || programConfig.date || "",
+    programm_date: programConfig.classStartAt || programConfig.date || "",
+    page_name: programConfig.pageName,
+    ip_address: clientIp(request) || null,
+    payment_status: paymentStatus,
+    amount: paymentStatus === "paid" ? Number(raw.amount) || 0 : "",
+    razorpay_order_id: paymentStatus === "paid" ? clean(raw.razorpay_order_id, 120) : "",
+    razorpay_payment_id: paymentStatus === "paid" ? clean(raw.razorpay_payment_id, 120) : "",
+    razorpay_signature: paymentStatus === "paid" ? clean(raw.razorpay_signature, 200) : "",
+    ...(token ? { token } : {}),
   };
 
-  const token = process.env.LEAD_WEBHOOK_TOKEN;
   try {
     const res = await fetch(url, {
       method: "POST",

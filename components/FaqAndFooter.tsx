@@ -1,4 +1,6 @@
 import { contact, faqs, finalCta } from "@/lib/content";
+import { registrationCta, registrationOpen } from "@/lib/program";
+import Image from "next/image";
 import { Container, Eyebrow } from "./ui";
 
 export function Faq() {
@@ -19,7 +21,7 @@ export function Faq() {
                   <span className="absolute left-1/2 top-0 h-4 w-0.5 -translate-x-1/2 bg-vls transition-transform group-open:scale-y-0" />
                 </span>
               </summary>
-              <p className="pb-5 pr-8 leading-relaxed text-ink/75">{f.a}</p>
+              <p className="pb-5 pr-8 leading-relaxed text-ink/75">{f.q === "What are the class dates and fees?" && !registrationOpen ? "Registration for this batch is closed. Join the waitlist to be notified when dates and fees are announced." : f.a}</p>
             </details>
           ))}
         </div>
@@ -40,7 +42,7 @@ export function FinalCta() {
           href="#register"
           className="inline-flex min-h-12 shrink-0 items-center justify-center bg-ivory px-7 py-3 text-[15px] font-semibold text-vls transition-colors hover:bg-white active:scale-[0.98] motion-reduce:active:scale-100"
         >
-          {finalCta.cta}
+          {registrationCta}
         </a>
       </Container>
     </section>
@@ -52,7 +54,9 @@ export function SiteFooter() {
     <footer className="on-dark bg-ink pb-28 text-ivory/80 lg:pb-0">
       <Container className="grid gap-8 py-12 text-sm leading-relaxed md:grid-cols-12">
         <div className="md:col-span-5">
-          <p className="text-[15px] font-bold tracking-[0.12em] text-ivory">VLS LAW ACADEMY</p>
+          <a href="#top" className="inline-flex" aria-label="VLS Law Academy, back to top">
+            <Image src="/assets/home/vls_logo.png" alt="VLS Law Academy" width={100} height={100} className="h-24 w-24 object-cover" />
+          </a>
           <address className="mt-3 not-italic">{contact.address}</address>
         </div>
         <div className="md:col-span-4">

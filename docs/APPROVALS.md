@@ -10,7 +10,7 @@ Course-specific details NOT established by the poster or brochure. Do not render
 | Assigned faculty / instructor profile | PENDING | Dr. Sivakumar Sivaprakasam is DRT/SARFAESI faculty; do not reuse without confirmation. |
 | Recordings, study material, certificates, assignments | PENDING | FAQ says "confirm with the academy". |
 | Seat limits, discounts, enrolment deadlines | PENDING | No scarcity copy. |
-| Permission to reuse classroom photographs | PENDING | See ASSET_MANIFEST.md. |
+| Permission to reuse classroom photographs | APPROVED | User requested reuse of suitable VLS landing-page assets on 2026-10-30. Sourced from the local VLS business-law project. |
 | Lead destination (endpoint / CRM / sheet / email) | PENDING | Implemented as `LEAD_WEBHOOK_URL` (+ optional `LEAD_WEBHOOK_TOKEN`): JSON POST, payload in lib/enquiry.ts. Unset = WhatsApp handoff only, never claimed as saved. VLS must supply a destination that accepts this JSON (or we adapt the payload). |
 | Course identifier for lead tagging | PROPOSED | Sent as `course: "constitutional-law-bootcamp"` in every lead. VLS to confirm the value their system expects. |
 | Final page domain / canonical URL | PENDING | Proposed: a vlslawacademy.com subdomain; VLS to choose. Set `NEXT_PUBLIC_SITE_URL` (https). A Vercel production build now FAILS without it; previews/staging are noindex. |

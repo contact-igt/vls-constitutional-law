@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { readUtm } from "@/lib/attribution";
 import { contact, registration, whatsappLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/content";
+import { programConfig, registrationCta, registrationOpen } from "@/lib/program";
 import type { EnquiryResponse } from "@/lib/enquiry";
 import {
   LEARNER_STATUSES,
@@ -28,12 +30,16 @@ type Result = { kind: "idle" } | { kind: "saved" } | { kind: "handoff"; url: str
  *  - error:   delivery failed; nothing is claimed as saved and WhatsApp/phone remain available.
  */
 export function EnquiryForm() {
+  const router = useRouter();
   const [values, setValues] = useState<EnquiryInput>(empty);
   const [errors, setErrors] = useState<EnquiryErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<Result>({ kind: "idle" });
+  const [confirmPayment, setConfirmPayment] = useState(false);
+  const [processingPayment, setProcessingPayment] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const lock = useRef(false); // synchronous guard: state updates are too late to stop a fast double-click
+  const paymentPending = useRef(false);
 
   const set = <K extends keyof EnquiryInput>(key: K, value: EnquiryInput[K]) => {
     setValues((v) => ({ ...v, [key]: value }));
@@ -52,6 +58,43 @@ export function EnquiryForm() {
     return whatsappLink(lines.join("\n"));
   };
 
+  const finish = (paymentStatus: "waitlist" | "paid", payment?: RazorpayResponse) => {
+    sessionStorage.setItem("registration", JSON.stringify({ name: values.name.trim(), email: values.email.trim(), payment_status: paymentStatus, razorpay_payment_id: payment?.razorpay_payment_id || "" }));
+    router.push("/thank-you");
+  };
+
+  const paymentError = () => {
+    router.push("/payment-error");
+  };
+
+  const startPayment = async () => {
+    const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    // const key = "rzp_test_Ss2NFtpJFLRAiw";
+    if (!key || !window.Razorpay) throw new Error("Razorpay is unavailable");
+    const response = await fetch("/api/payment/order", { method: "POST" });
+    const order = await response.json();
+    if (!response.ok || !order?.id) throw new Error("Order failed");
+    const razorpay = new window.Razorpay({
+      key, order_id: order.id, amount: order.amount, currency: order.currency, name: programConfig.name,
+      description: `${programConfig.name} registration`, prefill: { name: values.name, email: values.email, contact: values.mobile },
+      handler: async (payment: RazorpayResponse) => {
+        setProcessingPayment(true);
+        try {
+          const res = await fetch("/api/payment/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...values, utm: readUtm(), pageUrl: window.location.href.split("#")[0], ...payment }) });
+          const data = (await res.json().catch(() => null)) as EnquiryResponse | null;
+          if (data?.ok) finish("paid", payment); else paymentError();
+        } catch {
+          paymentError();
+        } finally {
+          setProcessingPayment(false); paymentPending.current = false; setSubmitting(false); lock.current = false;
+        }
+      },
+    });
+    razorpay.on("payment.failed", () => { paymentPending.current = false; setSubmitting(false); lock.current = false; paymentError(); });
+    razorpay.open();
+    paymentPending.current = true;
+  };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (lock.current) return;
@@ -63,20 +106,24 @@ export function EnquiryForm() {
       return;
     }
 
+    const honeypot = (new FormData(e.currentTarget).get("website") as string) ?? "";
+    if (registrationOpen) {
+      setConfirmPayment(true);
+      return;
+    }
+
     lock.current = true;
     setSubmitting(true);
     setResult({ kind: "idle" });
-    const honeypot = (new FormData(e.currentTarget).get("website") as string) ?? "";
     try {
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, utm: readUtm(), pageUrl: window.location.href.split("#")[0], website: honeypot }),
+        body: JSON.stringify({ ...values, payment_status: "waitlist", utm: readUtm(), pageUrl: window.location.href.split("#")[0], website: honeypot }),
       });
       const data = (await res.json().catch(() => null)) as EnquiryResponse | null;
       if (data?.ok) {
-        setResult({ kind: "saved" });
-        setValues(empty);
+        finish("waitlist");
       } else if (data?.mode === "invalid") {
         setErrors(data.errors);
       } else if (data?.mode === "whatsapp") {
@@ -91,8 +138,25 @@ export function EnquiryForm() {
     } catch {
       setResult({ kind: "error" });
     } finally {
-      lock.current = false;
+      if (!paymentPending.current) {
+        lock.current = false;
+        setSubmitting(false);
+      }
+    }
+  };
+
+  const confirmAndStartPayment = async () => {
+    setConfirmPayment(false);
+    lock.current = true;
+    setSubmitting(true);
+    setResult({ kind: "idle" });
+    try {
+      await startPayment();
+    } catch {
+      paymentPending.current = false;
       setSubmitting(false);
+      lock.current = false;
+      paymentError();
     }
   };
 
@@ -110,6 +174,7 @@ export function EnquiryForm() {
   const errorCount = Object.values(errors).filter(Boolean).length;
 
   return (
+    <>
     <form ref={formRef} onSubmit={onSubmit} noValidate className="relative space-y-5" aria-label="Boot camp enquiry form">
       {errorCount > 0 && (
         <p role="alert" className="border-l-4 border-vls bg-vls/5 px-4 py-3 text-sm font-medium text-vls">
@@ -193,10 +258,10 @@ export function EnquiryForm() {
       </div>
 
       <button type="submit" disabled={submitting} aria-disabled={submitting} className={`${btnPrimary} w-full disabled:opacity-60 sm:w-auto`}>
-        {submitting ? "Sending…" : registration.primaryCta}
+        {submitting ? (registrationOpen ? "Opening payment…" : "Joining waitlist…") : registrationCta}
       </button>
 
-      <p className="text-sm text-muted">{registration.note}</p>
+      <p className="text-sm text-muted">{registrationOpen ? registration.note : "Join the waitlist and we will contact you when the schedule and fee are announced."}</p>
 
       <div role="status" aria-live="polite">
         {result.kind === "saved" && (
@@ -208,7 +273,7 @@ export function EnquiryForm() {
         {result.kind === "handoff" && (
           <p className="border-l-4 border-gold bg-gold/10 px-4 py-3 text-sm text-ink">
             We opened WhatsApp with your details. <strong>Your enquiry reaches us only once you send that
-            message.</strong> If WhatsApp did not open,{" "}
+              message.</strong> If WhatsApp did not open,{" "}
             <a href={result.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-vls underline underline-offset-2">
               open it with your details
             </a>{" "}
@@ -237,5 +302,29 @@ export function EnquiryForm() {
         </a>
       </div>
     </form>
+
+    {confirmPayment && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" aria-labelledby="payment-confirmation-title">
+        <div className="w-full max-w-md bg-white p-6 shadow-2xl sm:p-8">
+          <h2 id="payment-confirmation-title" className="font-serif text-2xl font-semibold text-ink">Confirm payment</h2>
+          <p className="mt-3 leading-relaxed text-ink/75">You will be redirected to Razorpay to pay ₹{programConfig.fee}. After payment, please wait while we confirm your registration. Do not close or refresh this page.</p>
+          <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <button type="button" onClick={() => setConfirmPayment(false)} className={btnSecondary}>Cancel</button>
+            <button type="button" onClick={confirmAndStartPayment} className={btnPrimary}>Continue to payment</button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {processingPayment && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="status" aria-live="assertive">
+        <div className="w-full max-w-md bg-white p-6 text-center shadow-2xl sm:p-8">
+          <div aria-hidden="true" className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-line border-t-vls" />
+          <h2 className="mt-5 font-serif text-2xl font-semibold text-ink">Confirming your payment</h2>
+          <p className="mt-3 leading-relaxed text-ink/75">Please do not close or refresh this page.</p>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

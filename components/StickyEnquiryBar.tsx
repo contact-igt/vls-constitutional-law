@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { whatsappLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/content";
+import { registrationCta } from "@/lib/program";
 import { WhatsAppIcon } from "./ui";
 
 /** Compact bottom action on mobile. Hidden while the registration form or final CTA is on screen. */
@@ -26,19 +27,20 @@ export function StickyEnquiryBar() {
   }, []);
 
   return (
-    <aside
-      aria-label="Quick enquiry actions"
-      className={`fixed inset-x-0 bottom-0 z-30 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${hidden ? "translate-y-full" : ""}`}
-      style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
-      aria-hidden={hidden}
-    >
-      <div className="mx-auto flex max-w-md gap-3">
+    <>
+      <aside
+        aria-label="Quick enquiry actions"
+        className={`fixed inset-x-0 bottom-0 z-30 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${hidden ? "translate-y-full" : ""}`}
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+        aria-hidden={hidden}
+      >
+        <div className="mx-auto flex max-w-md gap-3">
         <a
           href="#register"
           tabIndex={hidden ? -1 : 0}
           className="inline-flex min-h-12 flex-1 items-center justify-center bg-vls px-4 text-[15px] font-semibold text-white active:bg-vls-dark"
         >
-          Enquire Now
+          {registrationCta}
         </a>
         <a
           href={whatsappLink(WHATSAPP_DEFAULT_MESSAGE)}
@@ -51,7 +53,17 @@ export function StickyEnquiryBar() {
           <WhatsAppIcon />
           <span>WhatsApp</span>
         </a>
-      </div>
-    </aside>
+        </div>
+      </aside>
+      <a
+        href={whatsappLink(WHATSAPP_DEFAULT_MESSAGE)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Enquire on WhatsApp (opens in a new tab)"
+        className="fixed bottom-[80px] right-5 z-50 hidden h-15 w-15 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 focus-visible:scale-105 lg:flex"
+      >
+        <WhatsAppIcon className="h-8 w-8" />
+      </a>
+    </>
   );
 }
