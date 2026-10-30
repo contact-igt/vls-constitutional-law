@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --vls-red: #ae1015;
+  --vls-red-dark: #8c0c11;
+  --charcoal: #161616;
+  --ivory: #faf8f5;
+  --gold: #c8a46b;
+  --muted: #5c5a57;
+  --line: #e4ded4;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-vls: var(--vls-red);
+  --color-vls-dark: var(--vls-red-dark);
+  --color-ink: var(--charcoal);
+  --color-ivory: var(--ivory);
+  --color-gold: var(--gold);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  background: var(--ivory);
+  color: var(--charcoal);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--vls-red);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.on-dark :focus-visible {
+  outline-color: var(--gold);
+}
+
+/* Restrained entrance: opacity + small lift, once. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
