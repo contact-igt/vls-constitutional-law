@@ -80,16 +80,16 @@ describe("POST /api/enquiry", () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response("ok", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
 
-    await post({ ...valid, payment_status: "paid", amount: 500 });
+    await post({ ...valid, payment_status: "paid", amount: 499 });
     expect(JSON.parse(fetchMock.mock.calls[0][1].body).payment_status).toBe("waitlist");
 
     await handleEnquiry(new Request("http://localhost/api/payment/verify", {
       method: "POST",
-      body: JSON.stringify({ ...valid, payment_status: "paid", amount: 500 }),
+      body: JSON.stringify({ ...valid, payment_status: "paid", amount: 499 }),
     }), true);
     const paid = JSON.parse(fetchMock.mock.calls[1][1].body);
     expect(paid.payment_status).toBe("paid");
-    expect(paid.amount).toBe(500);
+    expect(paid.amount).toBe(499);
   });
 
   it("reports an error, not success, when the destination fails", async () => {
