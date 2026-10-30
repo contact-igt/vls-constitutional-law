@@ -11,7 +11,7 @@ export const programConfig = {
   classStartAt: "2026-11-13T18:00:00+05:30" as string | null,
   date: "Friday, November 13, 2026" as string | null,
   time: "6:00 PM – 9:00 PM IST" as string | null,
-  fee: 500 as number | null,
+  fee: 499 as number | null,
 } as const;
 
 export const contact = {
