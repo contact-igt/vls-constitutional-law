@@ -26,8 +26,9 @@ export function StickyEnquiryBar() {
   }, []);
 
   return (
-    <div
-      className={`fixed inset-x-0 bottom-0 z-30 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur transition-transform duration-300 md:hidden ${hidden ? "translate-y-full" : ""}`}
+    <aside
+      aria-label="Quick enquiry actions"
+      className={`fixed inset-x-0 bottom-0 z-30 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${hidden ? "translate-y-full" : ""}`}
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       aria-hidden={hidden}
     >
@@ -51,6 +52,6 @@ export function StickyEnquiryBar() {
           <span>WhatsApp</span>
         </a>
       </div>
-    </div>
+    </aside>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { btnPrimary, Container } from "./ui";
 
 const links = [
@@ -12,16 +12,29 @@ const links = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggle.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-ivory/95 backdrop-blur supports-[backdrop-filter]:bg-ivory/85">
       <Container className="flex h-16 items-center justify-between gap-4">
-        <a href="#top" className="leading-tight" aria-label="VLS Law Academy, Constitutional Law Boot Camp, back to top">
+        <a href="#top" className="flex min-h-11 flex-col justify-center leading-tight" aria-label="VLS Law Academy, Constitutional Law Boot Camp, back to top">
           <span className="block text-[15px] font-bold tracking-[0.12em] text-vls">VLS LAW ACADEMY</span>
           <span className="block text-[11px] uppercase tracking-[0.16em] text-muted">Constitutional Law Boot Camp</span>
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="text-sm font-medium text-ink/80 hover:text-vls">
               {l.label}
@@ -33,8 +46,9 @@ export function SiteHeader() {
         </nav>
 
         <button
+          ref={toggle}
           type="button"
-          className="inline-flex min-h-11 items-center gap-2 border border-ink/25 px-4 text-sm font-semibold md:hidden"
+          className="inline-flex min-h-11 items-center gap-2 border border-ink/25 px-4 text-sm font-semibold lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
@@ -44,7 +58,7 @@ export function SiteHeader() {
       </Container>
 
       {open && (
-        <nav id="mobile-menu" aria-label="Primary mobile" className="border-t border-line bg-ivory md:hidden">
+        <nav id="mobile-menu" aria-label="Primary mobile" className="border-t border-line bg-ivory lg:hidden">
           <Container className="flex flex-col py-2">
             {links.map((l) => (
               <a

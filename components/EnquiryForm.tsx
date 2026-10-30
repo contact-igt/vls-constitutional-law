@@ -180,7 +180,7 @@ export function EnquiryForm() {
         <div className="flex items-start gap-3">
           <input id="consent" name="consent" type="checkbox" checked={values.consent}
             onChange={(e) => set("consent", e.target.checked)}
-            className="mt-1 h-5 w-5 shrink-0 accent-[#ae1015]" {...a11y("consent")} />
+            className="mt-0.5 h-6 w-6 shrink-0 accent-[#ae1015]" {...a11y("consent")} />
           <label htmlFor="consent" className="text-sm leading-relaxed text-ink/85">
             I agree to be contacted by VLS Law Academy about this enquiry, as described in the{" "}
             <a href={contact.privacy} target="_blank" rel="noopener noreferrer" className="font-semibold text-vls underline underline-offset-2">

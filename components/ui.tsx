@@ -46,7 +46,7 @@ export function Photo({
       ) : (
         <div
           aria-hidden="true"
-          className="absolute inset-0 flex flex-col items-center justify-center gap-1 p-6 text-center text-ink/45"
+          className="absolute inset-0 flex flex-col items-center justify-center gap-1 p-6 text-center text-ink/70"
         >
           <span className="text-sm font-medium">{label}</span>
           <span className="text-[11px] uppercase tracking-widest">Photograph pending approval</span>

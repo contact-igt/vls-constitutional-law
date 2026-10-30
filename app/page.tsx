@@ -12,11 +12,11 @@ import { Topics } from "@/components/Topics";
 export default function Page() {
   return (
     <>
-      <a href="#syllabus" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-ivory">
-        Skip to syllabus
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-ivory">
+        Skip to main content
       </a>
       <SiteHeader />
-      <main>
+      <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <Problem />
         <Curriculum />

@@ -49,7 +49,7 @@ export function FinalCta() {
 
 export function SiteFooter() {
   return (
-    <footer className="on-dark bg-ink pb-28 text-ivory/80 md:pb-0">
+    <footer className="on-dark bg-ink pb-28 text-ivory/80 lg:pb-0">
       <Container className="grid gap-8 py-12 text-sm leading-relaxed md:grid-cols-12">
         <div className="md:col-span-5">
           <p className="text-[15px] font-bold tracking-[0.12em] text-ivory">VLS LAW ACADEMY</p>
@@ -59,20 +59,20 @@ export function SiteFooter() {
           <p className="font-semibold text-ivory">Contact</p>
           <p className="mt-3">
             Phone:{" "}
-            <a href={contact.courseTel} className="underline underline-offset-2 hover:text-gold">{contact.coursePhone}</a>
+            <a href={contact.courseTel} className="inline-block py-1.5 underline underline-offset-2 hover:text-gold">{contact.coursePhone}</a>
             {" / "}
-            <a href={contact.academyTel} className="underline underline-offset-2 hover:text-gold">{contact.academyPhone}</a>
+            <a href={contact.academyTel} className="inline-block py-1.5 underline underline-offset-2 hover:text-gold">{contact.academyPhone}</a>
           </p>
           <p className="mt-1">
             Website:{" "}
-            <a href={contact.website} className="underline underline-offset-2 hover:text-gold">vlslawacademy.com</a>
+            <a href={contact.website} className="inline-block py-1.5 underline underline-offset-2 hover:text-gold">vlslawacademy.com</a>
           </p>
         </div>
         <div className="md:col-span-3">
           <p className="font-semibold text-ivory">Legal</p>
-          <ul className="mt-3 space-y-1">
-            <li><a href={contact.privacy} className="underline underline-offset-2 hover:text-gold">Privacy Policy</a></li>
-            <li><a href={contact.terms} className="underline underline-offset-2 hover:text-gold">Terms &amp; Conditions</a></li>
+          <ul className="mt-2">
+            <li><a href={contact.privacy} className="inline-block py-1.5 underline underline-offset-2 hover:text-gold">Privacy Policy</a></li>
+            <li><a href={contact.terms} className="inline-block py-1.5 underline underline-offset-2 hover:text-gold">Terms &amp; Conditions</a></li>
           </ul>
         </div>
       </Container>

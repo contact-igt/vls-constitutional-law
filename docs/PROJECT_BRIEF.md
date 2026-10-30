@@ -28,7 +28,7 @@ MODULES:
   M3: Responsive, accessible and performance polish
   M4: Read-only verification and release preparation
 
-STATUS: M2 complete (/api/enquiry with webhook destination + WhatsApp fallback). M3 next: responsive/accessibility polish. Lead destination still PENDING.
+STATUS: M3 complete (axe clean at 375/768/1440, nav breakpoint lg, tap targets, landmarks). M4 next: read-only audit. Photos + lead destination still PENDING.
 DEPLOYMENT: Local preview and staging only until approved
 
 LOOP RULES:

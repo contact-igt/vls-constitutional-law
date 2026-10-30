@@ -11,10 +11,9 @@ export function Registration() {
           <h2 className="mt-4 font-serif text-3xl font-semibold leading-tight sm:text-4xl">{registration.heading}</h2>
           <p className="mt-5 leading-relaxed text-ink/75">{registration.body}</p>
           <p className="mt-8 text-sm text-muted">Prefer to talk?</p>
-          <p className="mt-1">
-            <a href={contact.courseTel} className="font-semibold text-vls underline underline-offset-2">{contact.coursePhone}</a>
-            {" · "}
-            <a href={contact.academyTel} className="font-semibold text-vls underline underline-offset-2">{contact.academyPhone}</a>
+          <p className="mt-1 flex flex-wrap items-center gap-x-3">
+            <a href={contact.courseTel} className="inline-block py-2 font-semibold text-vls underline underline-offset-2">{contact.coursePhone}</a>
+            <a href={contact.academyTel} className="inline-block py-2 font-semibold text-vls underline underline-offset-2">{contact.academyPhone}</a>
           </p>
         </div>
 

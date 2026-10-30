@@ -54,7 +54,7 @@ export function WhyVls() {
               alt={photos.academy.alt}
               label="VLS academy interior"
               sizes="(min-width: 1024px) 14vw, 40vw"
-              className="col-span-2 aspect-[2/5] sm:aspect-[4/10]"
+              className="col-span-2 mt-10 aspect-[4/5]"
             />
           </div>
         </div>
