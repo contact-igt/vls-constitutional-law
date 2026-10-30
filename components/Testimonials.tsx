@@ -32,11 +32,11 @@ export function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <button key={testimonial.video} type="button" onClick={() => setVideo(testimonial.video)} className="group relative aspect-[4/5] overflow-hidden bg-ink text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-gold">
               <Image src={testimonial.image} alt={`VLS learner video testimonial ${index + 1}`} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-300 group-hover:scale-105" />
-              <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+              <span aria-hidden="true" className="absolute inset-0 bg-black/45 transition-colors group-hover:bg-black/55" />
               <span className="absolute left-5 top-5 text-sm font-semibold tracking-wide text-white">Student story</span>
               <span className="absolute inset-0 flex items-center justify-center">
-                <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-vls shadow-lg transition-transform group-hover:scale-110">
-                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6 fill-current"><path d="m8 5 11 7-11 7V5Z" /></svg>
+                <span className="inline-flex h-18 w-18 items-center justify-center rounded-full bg-vls pl-1 text-white shadow-lg transition-transform group-hover:scale-110">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" className="h-10 w-10 fill-current"><path d="m8 5 11 7-11 7V5Z" /></svg>
                 </span>
               </span>
               <span className="sr-only">Play learner testimonial {index + 1}</span>
