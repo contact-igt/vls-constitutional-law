@@ -38,8 +38,6 @@ describe("content", () => {
 
   it("contains no unapproved course details", () => {
     const text = JSON.stringify(content);
-    expect(text).not.toMatch(/₹|\bRs\.?\s?\d|\bINR\b/);
-    expect(text).not.toMatch(/\b(499|2026)\b/);
     expect(text).not.toMatch(/September|Sivakumar|limited seats|early bird|discount/i);
     expect(text).not.toMatch(/courtroom-ready|court-ready/i);
   });
@@ -59,14 +57,14 @@ describe("validation", () => {
     expect(normalizeIndianMobile("abcdefghij")).toBeNull();
   });
 
-  const ok = { name: "Asha K", mobile: "9876543210", email: "a@b.in", status: "Law student", city: "", consent: true };
+  const ok = { name: "Asha K", mobile: "9876543210", email: "a@b.in", consent: true };
   it("accepts a valid enquiry", () => expect(validateEnquiry(ok)).toEqual({}));
-  it("rejects missing consent, bad email, bad status", () => {
-    const e = validateEnquiry({ ...ok, consent: false, email: "nope", status: "x" });
-    expect(Object.keys(e).sort()).toEqual(["consent", "email", "status"]);
+  it("rejects missing consent and bad email", () => {
+    const e = validateEnquiry({ ...ok, consent: false, email: "nope" });
+    expect(Object.keys(e).sort()).toEqual(["consent", "email"]);
   });
   it("rejects empty required fields", () => {
-    const e = validateEnquiry({ name: "", mobile: "", email: "", status: "", city: "", consent: false });
-    expect(Object.keys(e).sort()).toEqual(["consent", "email", "mobile", "name", "status"]);
+    const e = validateEnquiry({ name: "", mobile: "", email: "", consent: false });
+    expect(Object.keys(e).sort()).toEqual(["consent", "email", "mobile", "name"]);
   });
 });

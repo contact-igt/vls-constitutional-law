@@ -5,8 +5,6 @@ const valid = {
   name: "Asha K",
   mobile: "+91 98765 43210",
   email: "asha@example.in",
-  status: "Law student",
-  city: "Chennai",
   consent: true,
   utm: { utm_source: "instagram", utm_campaign: "boot", evil: "x" },
   pageUrl: "https://example.test/?utm_source=instagram",
@@ -69,8 +67,6 @@ describe("POST /api/enquiry", () => {
     expect(sent.mobile).toBe("9876543210");
     expect(sent.utm).toEqual({ utm_source: "instagram", utm_campaign: "boot" });
     expect(sent.consent.given).toBe(true);
-    expect(sent.current_status).toBe("Law student");
-    expect(sent.city).toBe("Chennai");
     expect(sent.ip_address).toBe("203.0.113.10");
     expect(sent.token).toBe("secret");
   });
