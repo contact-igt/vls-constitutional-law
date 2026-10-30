@@ -28,7 +28,7 @@ MODULES:
   M3: Responsive, accessible and performance polish
   M4: Read-only verification and release preparation
 
-STATUS: M3 complete (axe clean at 375/768/1440, nav breakpoint lg, tap targets, landmarks). M4 next: read-only audit. Photos + lead destination still PENDING.
+STATUS: M4 audit done; canonical guard, og:url, share card, favicon, robots, sitemap added. Blocked on: photo approval, lead destination, production domain, VLS artwork.
 DEPLOYMENT: Local preview and staging only until approved
 
 LOOP RULES:
