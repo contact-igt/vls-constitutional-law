@@ -1,5 +1,5 @@
 import { problem } from "@/lib/content";
-import { Container, Eyebrow } from "./ui";
+import { Container, Eyebrow, Photo } from "./ui";
 
 export function Problem() {
   return (
@@ -11,6 +11,17 @@ export function Problem() {
             {problem.heading}
           </h2>
           <p className="mt-5 leading-relaxed text-ink/75">{problem.intro}</p>
+
+          {/* Classroom photograph */}
+          <div className="mt-8">
+            <Photo
+              src="/assets/vls/classroom/faculty-teaching.jpg"
+              alt="VLS faculty teaching constitutional law to practitioners in the classroom"
+              className="aspect-[16/9] w-full"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              label="VLS Constitutional Law Bootcamp — classroom session"
+            />
+          </div>
         </div>
 
         <div className="lg:col-span-7">

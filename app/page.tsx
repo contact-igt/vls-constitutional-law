@@ -21,11 +21,11 @@ export default function Page() {
         <Hero />
         <Problem />
         <Curriculum />
+        <Testimonials />
         <Topics />
         <Takeaways />
         <Audience />
         <WhyVls />
-        <Testimonials />
         <Registration />
         <Faq />
         <FinalCta />

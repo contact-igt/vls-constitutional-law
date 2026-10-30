@@ -1,5 +1,5 @@
 import { takeaways } from "@/lib/content";
-import { Container, Eyebrow } from "./ui";
+import { Container, Eyebrow, Photo } from "./ui";
 
 export function Takeaways() {
   return (
@@ -11,6 +11,17 @@ export function Takeaways() {
             {takeaways.heading}
           </h2>
           <p className="mt-5 leading-relaxed text-ink/75">{takeaways.support}</p>
+
+          {/* Classroom photograph */}
+          <div className="mt-8">
+            <Photo
+              src="/assets/vls/classroom/students-notes.jpg"
+              alt="VLS bootcamp participants taking notes during a constitutional law session"
+              className="aspect-[16/9] w-full"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              label="VLS Constitutional Law Bootcamp — participants taking notes"
+            />
+          </div>
         </div>
 
         <ul className="space-y-5 lg:col-span-7">
