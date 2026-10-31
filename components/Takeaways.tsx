@@ -1,4 +1,4 @@
-import { takeaways } from "@/lib/content";
+import { photos, takeaways } from "@/lib/content";
 import { Container, Eyebrow, Photo } from "./ui";
 
 export function Takeaways() {
@@ -15,8 +15,8 @@ export function Takeaways() {
           {/* Classroom photograph */}
           <div className="mt-8">
             <Photo
-              src="/assets/vls/classroom/students-notes.jpg"
-              alt="VLS bootcamp participants taking notes during a constitutional law session"
+              src={photos.notes.src}
+              alt={photos.notes.alt}
               className="aspect-[16/9] w-full"
               sizes="(max-width: 1024px) 100vw, 40vw"
               label="VLS Constitutional Law Bootcamp — participants taking notes"

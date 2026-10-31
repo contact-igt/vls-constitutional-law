@@ -1,4 +1,4 @@
-import { problem } from "@/lib/content";
+import { photos, problem } from "@/lib/content";
 import { Container, Eyebrow, Photo } from "./ui";
 
 export function Problem() {
@@ -15,9 +15,9 @@ export function Problem() {
           {/* Classroom photograph */}
           <div className="mt-8">
             <Photo
-              src="/assets/vls/classroom/faculty-teaching.jpg"
-              alt="VLS faculty teaching constitutional law to practitioners in the classroom"
-              className="aspect-[16/9] w-full"
+              src={photos.hero.src}
+              alt={photos.hero.alt}
+              className="aspect-[16/9] w-full [&>img]:object-top"
               sizes="(max-width: 1024px) 100vw, 40vw"
               label="VLS Constitutional Law Bootcamp — classroom session"
             />
