@@ -227,18 +227,22 @@ export const finalCta = {
   cta: "Enquire About the Boot Camp",
 } as const;
 
-// Existing VLS classroom photography reused from the VLS business-law landing page.
+// VLS classroom photography reused from the AIBE landing page.
 export const photos = {
   hero: {
-    src: "/assets/vls/classroom/faculty-teaching.jpg",
-    alt: "Faculty member explaining a point to a classroom of law learners at VLS Law Academy",
+    src: "/assets/vls/constitutional/problem-classroom-wide.jpg",
+    alt: "VLS faculty member leading a classroom session",
   },
   learners: {
-    src: "/assets/vls/classroom/faculty-pointing.jpg",
-    alt: "Faculty member teaching a VLS Law Academy classroom session",
+    src: "/assets/vls/constitutional/learners-session.jpg",
+    alt: "VLS learners participating in a classroom session",
   },
   academy: {
-    src: "/assets/vls/classroom/academy-interior.jpg",
-    alt: "Interior of the VLS Law Academy classroom with VLS branding",
+    src: "/assets/vls/constitutional/academy-community.jpg",
+    alt: "VLS Law Academy learner community in the academy setting",
+  },
+  notes: {
+    src: "/assets/vls/constitutional/takeaways-classroom.jpg",
+    alt: "VLS faculty teaching a classroom of law learners",
   },
 } as const;

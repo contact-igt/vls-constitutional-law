@@ -41,20 +41,13 @@ export function WhyVls() {
         <div className="lg:col-span-6">
           <h3 className="font-serif text-2xl font-semibold">{environment.heading}</h3>
           <p className="mt-3 leading-relaxed text-ink/75">{environment.body}</p>
-          <div className="mt-6 grid min-h-72 flex-1 grid-cols-2 gap-4">
+          <div className="mt-6">
             <Photo
               src={photos.learners.src}
               alt={photos.learners.alt}
               label="VLS learners in session"
-              sizes="(min-width: 1024px) 20vw, 50vw"
-              className="h-full"
-            />
-            <Photo
-              src={photos.academy.src}
-              alt={photos.academy.alt}
-              label="VLS academy interior"
-              sizes="(min-width: 1024px) 20vw, 50vw"
-              className="h-full"
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              className="aspect-[16/9] w-full"
             />
           </div>
         </div>
