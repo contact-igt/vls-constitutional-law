@@ -11,7 +11,7 @@ export const CONSENT_TEXT =
 
 /** What the browser sends to /api/enquiry. */
 export type EnquiryRequest = EnquiryInput & {
-  utm?: Utm; pageUrl?: string; website?: string; payment_status?: "waitlist" | "paid";
+  utm?: Utm; pageUrl?: string; website?: string; ip_address?: string; payment_status?: "waitlist" | "paid";
   amount?: number | ""; razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string;
 };
 
@@ -101,7 +101,7 @@ export async function handleEnquiry(request: Request, trustedPayment = false): P
     programme_date: programConfig.classStartAt || programConfig.date || "",
     programm_date: programConfig.classStartAt || programConfig.date || "",
     page_name: programConfig.pageName,
-    ip_address: clientIp(request) || null,
+    ip_address: clientIp(request) || clean(raw.ip_address, 45) || null,
     payment_status: paymentStatus,
     amount: paymentStatus === "paid" ? Number(raw.amount) || 0 : "",
     razorpay_order_id: paymentStatus === "paid" ? clean(raw.razorpay_order_id, 120) : "",
