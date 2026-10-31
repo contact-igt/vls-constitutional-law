@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { readUtm } from "@/lib/attribution";
+import { readClientIp, readUtm } from "@/lib/attribution";
 import { contact, registration, whatsappLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/content";
 import { programConfig, registrationCta, registrationOpen } from "@/lib/program";
 import type { EnquiryResponse } from "@/lib/enquiry";
@@ -77,7 +78,7 @@ export function EnquiryForm() {
       handler: async (payment: RazorpayResponse) => {
         setProcessingPayment(true);
         try {
-          const res = await fetch("/api/payment/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...values, utm: readUtm(), pageUrl: window.location.href.split("#")[0], ...payment }) });
+          const res = await fetch("/api/payment/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...values, utm: readUtm(), ip_address: await readClientIp(), pageUrl: window.location.href.split("#")[0], ...payment }) });
           const data = (await res.json().catch(() => null)) as EnquiryResponse | null;
           if (data?.ok) finish("paid", payment); else paymentError();
         } catch {
@@ -116,7 +117,7 @@ export function EnquiryForm() {
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, payment_status: "waitlist", utm: readUtm(), pageUrl: window.location.href.split("#")[0], website: honeypot }),
+        body: JSON.stringify({ ...values, payment_status: "waitlist", utm: readUtm(), ip_address: await readClientIp(), pageUrl: window.location.href.split("#")[0], website: honeypot }),
       });
       const data = (await res.json().catch(() => null)) as EnquiryResponse | null;
       if (data?.ok) {
@@ -189,7 +190,7 @@ export function EnquiryForm() {
         {err("name")}
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-5">
         <div>
           <label htmlFor="mobile" className="text-sm font-semibold">
             Mobile number <span className="text-vls" aria-hidden="true">*</span>
@@ -271,8 +272,9 @@ export function EnquiryForm() {
       </div>
     </form>
 
-    {confirmPayment && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" aria-labelledby="payment-confirmation-title">
+    {confirmPayment &&
+      createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" aria-labelledby="payment-confirmation-title">
         <div className="w-full max-w-md bg-white p-6 shadow-2xl sm:p-8">
           <h2 id="payment-confirmation-title" className="font-serif text-2xl font-semibold text-ink">Confirm payment</h2>
           <p className="mt-3 leading-relaxed text-ink/75">You will be redirected to Razorpay to pay ₹{programConfig.fee}. After payment, please wait while we confirm your registration. Do not close or refresh this page.</p>
@@ -281,18 +283,21 @@ export function EnquiryForm() {
             <button type="button" onClick={confirmAndStartPayment} className={btnPrimary}>Continue to payment</button>
           </div>
         </div>
-      </div>
-    )}
+        </div>,
+        document.body,
+      )}
 
-    {processingPayment && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="status" aria-live="assertive">
+    {processingPayment &&
+      createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="status" aria-live="assertive">
         <div className="w-full max-w-md bg-white p-6 text-center shadow-2xl sm:p-8">
           <div aria-hidden="true" className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-line border-t-vls" />
           <h2 className="mt-5 font-serif text-2xl font-semibold text-ink">Confirming your payment</h2>
           <p className="mt-3 leading-relaxed text-ink/75">Please do not close or refresh this page.</p>
         </div>
-      </div>
-    )}
+        </div>,
+        document.body,
+      )}
     </>
   );
 }

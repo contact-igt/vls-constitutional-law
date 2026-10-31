@@ -15,8 +15,14 @@ export async function POST(request: Request) {
   if (!isRegistrationOpen() || !validSignature(orderId, paymentId, signature))
     return Response.json({ ok: false, error: "We could not verify this payment." }, { status: 400 });
 
+  const headers = new Headers();
+  for (const name of ["x-forwarded-for", "x-real-ip"]) {
+    const value = request.headers.get(name);
+    if (value) headers.set(name, value);
+  }
   return handleEnquiry(new Request(request.url, {
     method: "POST",
+    headers,
     body: JSON.stringify({ ...raw, payment_status: "paid", amount: programConfig.fee }),
   }), true);
 }

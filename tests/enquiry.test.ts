@@ -71,6 +71,15 @@ describe("POST /api/enquiry", () => {
     expect(sent.token).toBe("secret");
   });
 
+  it("uses the browser IP fallback when the proxy does not provide one", async () => {
+    vi.stubEnv("NEXT_PUBLIC_LOCALHOST_API_URL", "https://dest.test/api/v1");
+    const fetchMock = vi.fn().mockResolvedValue(new Response("ok", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await post({ ...valid, ip_address: "203.0.113.10" });
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).ip_address).toBe("203.0.113.10");
+  });
+
   it("marks a lead paid only after the payment route has trusted it", async () => {
     vi.stubEnv("NEXT_PUBLIC_LOCALHOST_API_URL", "https://dest.test/api/v1");
     const fetchMock = vi.fn().mockResolvedValue(new Response("ok", { status: 200 }));
